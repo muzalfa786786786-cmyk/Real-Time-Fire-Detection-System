@@ -159,7 +159,7 @@ Contributions are welcome! Feel free to fork this repository and submit a pull r
 ## 📌 Author
 
 **Muzalfa BIBI**
-GitHub: [https://github.com/yourusername](https://github.com/muzalfa786786786-cmyk)
+GitHub: [https://github.com/Muzalfabibi](https://github.com/muzalfa786786786-cmyk)
 
 ---
 
