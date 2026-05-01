@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FireWatch — Real-Time Fire Detection System</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  <!-- Chart.js -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&family=Exo+2:wght@300;400;600;900&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<!-- ══════════════════════════  HEADER  ══════════════════════════════════ -->
+<header class="app-header">
+  <div class="header-left">
+    <div class="logo">
+      <span class="logo-icon">🔥</span>
+      <div class="logo-text">
+        <span class="logo-main">FIREWATCH</span>
+        <span class="logo-sub">Real-Time Detection System v1.0</span>
+      </div>
+    </div>
+  </div>
+  <div class="header-center">
+    <div class="sys-clock" id="sysClock">--:--:--</div>
+  </div>
+  <div class="header-right">
+    <div class="header-badge" id="systemBadge">
+      <span class="badge-dot"></span>
+      <span class="badge-text">SYSTEM ONLINE</span>
+    </div>
+  </div>
+</header>
+
+<!-- ══════════════════════════  MAIN GRID  ═══════════════════════════════ -->
+<main class="dashboard">
+
+  <!-- ── LEFT COLUMN ──────────────────────────────────────────────────── -->
+  <section class="col-left">
+
+    <!-- Video Feed Card -->
+    <div class="card card-video" id="videoCard">
+      <div class="card-header">
+        <span class="card-title">LIVE FEED</span>
+        <div class="feed-badges">
+          <span class="feed-badge" id="fpsBadge">0 FPS</span>
+          <span class="feed-badge live-dot" id="liveBadge">● IDLE</span>
+        </div>
+      </div>
+
+      <div class="video-wrapper" id="videoWrapper">
+        <!-- MJPEG stream injected by JS -->
+        <img id="videoStream" src="" alt="Video Feed" />
+        <div class="video-overlay" id="videoOverlay">
+          <div class="overlay-idle">
+            <div class="idle-icon">📷</div>
+            <p>Camera Not Active</p>
+            <p class="idle-hint">Press START DETECTION to begin</p>
+          </div>
+        </div>
+        <!-- Scan-line effect -->
+        <div class="scanlines"></div>
+      </div>
+
+      <!-- Alert banner -->
+      <div class="alert-banner" id="alertBanner">
+        <span class="alert-icon">⚠</span>
+        <span class="alert-text">FIRE DETECTED — IMMEDIATE ATTENTION REQUIRED</span>
+        <span class="alert-icon">⚠</span>
+      </div>
+    </div>
+
+    <!-- Controls Card -->
+    <div class="card card-controls">
+      <div class="card-header">
+        <span class="card-title">CONTROLS</span>
+      </div>
+      <div class="controls-row">
+        <button class="btn btn-start" id="btnStart" onclick="startDetection()">
+          <span class="btn-icon">▶</span>
+          <span>START DETECTION</span>
+        </button>
+        <button class="btn btn-stop" id="btnStop" onclick="stopDetection()" disabled>
+          <span class="btn-icon">■</span>
+          <span>STOP DETECTION</span>
+        </button>
+      </div>
+    </div>
+
+  </section>
+
+  <!-- ── RIGHT COLUMN ─────────────────────────────────────────────────── -->
+  <section class="col-right">
+
+    <!-- Status Panel -->
+    <div class="card card-status">
+      <div class="card-header">
+        <span class="card-title">DETECTION STATUS</span>
+      </div>
+      <div class="status-grid">
+
+        <div class="stat-box" id="statFire">
+          <div class="stat-label">FIRE STATUS</div>
+          <div class="stat-value" id="fireStatus">NO FIRE</div>
+          <div class="stat-icon">🟢</div>
+        </div>
+
+        <div class="stat-box" id="statIntensity">
+          <div class="stat-label">INTENSITY LEVEL</div>
+          <div class="stat-value" id="intensityLevel">—</div>
+          <div class="intensity-bar-wrap">
+            <div class="intensity-bar" id="intensityBar"></div>
+          </div>
+        </div>
+
+        <div class="stat-box">
+          <div class="stat-label">CONFIDENCE</div>
+          <div class="stat-value" id="confidenceVal">0%</div>
+          <div class="intensity-bar-wrap">
+            <div class="intensity-bar conf-bar" id="confBar"></div>
+          </div>
+        </div>
+
+        <div class="stat-box">
+          <div class="stat-label">FRAMES PROCESSED</div>
+          <div class="stat-value mono" id="frameCount">0</div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Graph Card -->
+    <div class="card card-graph">
+      <div class="card-header">
+        <span class="card-title">INTENSITY TIMELINE</span>
+        <button class="card-action" onclick="clearGraph()">CLEAR</button>
+      </div>
+      <div class="chart-container">
+        <canvas id="intensityChart"></canvas>
+      </div>
+    </div>
+
+    <!-- Event Log Card -->
+    <div class="card card-log">
+      <div class="card-header">
+        <span class="card-title">EVENT LOG</span>
+        <button class="card-action" onclick="clearLog()">CLEAR</button>
+      </div>
+      <div class="log-scroll" id="eventLog">
+        <div class="log-entry log-info">
+          <span class="log-time">--:--:--</span>
+          <span class="log-msg">System initialised. Awaiting detection start.</span>
+        </div>
+      </div>
+    </div>
+
+  </section>
+
+</main>
+
+<!-- ══════════════════════════  ALERT AUDIO  ═════════════════════════════ -->
+<!-- Web Audio API beep generated in JS — no external file needed -->
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
